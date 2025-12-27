@@ -120,7 +120,7 @@ SeparatorConfig *read_separator_config_from_dialog()
 
     // Orientation
     const gchar *orientation = read_config_value_as_string("orientation_combo");
-    if (stricmp(orientation, "horizontal") == 0)
+    if (strcasecmp(orientation, "horizontal") == 0)
         separator_config.orientation = GTK_ORIENTATION_HORIZONTAL;
     else
         separator_config.orientation = GTK_ORIENTATION_VERTICAL;
@@ -178,7 +178,7 @@ SeparatorConfig *read_separator_config_from_widget(GtkWidget *widget)
     // Visibility
     gboolean is_visible = gtk_widget_get_visible(widget);
     separator_config.is_visible = is_visible;
-   
+
     // Dimensions
     GtkAllocation allocation;
     gtk_widget_get_allocation(widget, &allocation);

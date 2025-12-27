@@ -127,11 +127,11 @@ MenuBarConfig *read_menu_bar_config_from_dialog()
 
     // Pack direction
     const gchar *orientation = read_config_value_as_string("pack_direction_combo");
-    if (stricmp(orientation, "RTL") == 0)
+    if (strcasecmp(orientation, "RTL") == 0)
         menu_bar_config.pack_direction = GTK_PACK_DIRECTION_RTL;
-    else if (stricmp(orientation, "TTB") == 0)
+    else if (strcasecmp(orientation, "TTB") == 0)
         menu_bar_config.pack_direction = GTK_PACK_DIRECTION_TTB;
-    else if (stricmp(orientation, "BTT") == 0)
+    else if (strcasecmp(orientation, "BTT") == 0)
         menu_bar_config.pack_direction = GTK_PACK_DIRECTION_BTT;
     else
         menu_bar_config.pack_direction = GTK_PACK_DIRECTION_LTR;
@@ -193,7 +193,7 @@ MenuBarConfig *read_menu_bar_config_from_widget(GtkWidget *widget)
     const gchar *tooltip = gtk_widget_get_tooltip_text(widget);
     if (tooltip)
         strcpy(menu_bar_config.tooltip, tooltip);
-   
+
     // Dimensions
     GtkAllocation allocation;
     gtk_widget_get_allocation(widget, &allocation);

@@ -7,6 +7,6 @@
 #include "./widgets.h"
 
 // View
-#include "./widgets/View/xml_builder/xml_builder.h"
+#include "./widgets/view/xml_builder/xml_builder.h"
 
 #endif

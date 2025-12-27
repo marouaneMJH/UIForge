@@ -1,5 +1,5 @@
 #include "./../../../include/builder.h"
-#include "./../../../include/widgets/View/widget_update.h"
+#include "./../../../include/widgets/view/widget_update.h"
 
 View *temp_parent_view = NULL;
 

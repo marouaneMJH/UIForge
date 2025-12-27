@@ -118,18 +118,18 @@ ScrolledWindowConfig *read_scrolled_window_config_from_dialog()
 
     // Horizontal scrollbar policy
     const gchar *h_policy = read_config_value_as_string("h_scrollbar_policy_combo");
-    if (stricmp(h_policy, "never") == 0)
+    if (strcasecmp(h_policy, "never") == 0)
         scrolled_window_config.h_policy = GTK_POLICY_NEVER;
-    else if (stricmp(h_policy, "always") == 0)
+    else if (strcasecmp(h_policy, "always") == 0)
         scrolled_window_config.h_policy = GTK_POLICY_ALWAYS;
     else
         scrolled_window_config.h_policy = GTK_POLICY_AUTOMATIC;
 
     // Vertical scrollbar policy
     const gchar *v_policy = read_config_value_as_string("v_scrollbar_policy_combo");
-    if (stricmp(v_policy, "never") == 0)
+    if (strcasecmp(v_policy, "never") == 0)
         scrolled_window_config.v_policy = GTK_POLICY_NEVER;
-    else if (stricmp(v_policy, "always") == 0)
+    else if (strcasecmp(v_policy, "always") == 0)
         scrolled_window_config.v_policy = GTK_POLICY_ALWAYS;
     else
         scrolled_window_config.v_policy = GTK_POLICY_AUTOMATIC;
@@ -181,7 +181,6 @@ ScrolledWindowConfig *read_scrolled_window_config_from_widget(GtkWidget *widget)
 
     // Scrollbar policy
     gtk_scrolled_window_get_policy(GTK_SCROLLED_WINDOW(widget), &scrolled_window_config.h_policy, &scrolled_window_config.v_policy);
-
 
     // Dimensions
     GtkAllocation allocation;

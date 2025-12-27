@@ -165,11 +165,11 @@ ProgressBarConfig *read_progress_bar_config_from_dialog()
 
     // Ellipsize
     const gchar *ellipsize = read_config_value_as_string("ellipsize_combo");
-    if (stricmp(ellipsize, "middle") == 0)
+    if (strcasecmp(ellipsize, "middle") == 0)
         progress_bar_config.ellipsize = PANGO_ELLIPSIZE_MIDDLE;
-    else if (stricmp(ellipsize, "start") == 0)
+    else if (strcasecmp(ellipsize, "start") == 0)
         progress_bar_config.ellipsize = PANGO_ELLIPSIZE_START;
-    else if (stricmp(ellipsize, "none") == 0)
+    else if (strcasecmp(ellipsize, "none") == 0)
         progress_bar_config.ellipsize = PANGO_ELLIPSIZE_NONE;
     else
         progress_bar_config.ellipsize = PANGO_ELLIPSIZE_END;
@@ -244,7 +244,7 @@ ProgressBarConfig *read_progress_bar_config_from_widget(GtkWidget *widget)
 
     // Opacity
     // progress_bar_config.opacity = gtk_widget_get_opacity(widget);
-   
+
     // Dimensions
     GtkAllocation allocation;
     gtk_widget_get_allocation(widget, &allocation);

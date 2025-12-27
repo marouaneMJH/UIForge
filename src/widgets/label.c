@@ -193,22 +193,22 @@ LabelConfig *read_label_config_from_dialog()
 
     // Justification type
     const gchar *jtype = read_config_value_as_string("jtype_combo");
-    if (stricmp(jtype, "left") == 0)
+    if (strcasecmp(jtype, "left") == 0)
         label_config.jtype = GTK_JUSTIFY_LEFT;
-    else if (stricmp(jtype, "right") == 0)
+    else if (strcasecmp(jtype, "right") == 0)
         label_config.jtype = GTK_JUSTIFY_RIGHT;
-    else if (stricmp(jtype, "fill") == 0)
+    else if (strcasecmp(jtype, "fill") == 0)
         label_config.jtype = GTK_JUSTIFY_FILL;
     else
         label_config.jtype = GTK_JUSTIFY_CENTER;
 
     // Ellipsize mode
     const gchar *ellipsize = read_config_value_as_string("ellipsize_combo");
-    if (stricmp(ellipsize, "start") == 0)
+    if (strcasecmp(ellipsize, "start") == 0)
         label_config.ellipsize = PANGO_ELLIPSIZE_START;
-    else if (stricmp(ellipsize, "middle") == 0)
+    else if (strcasecmp(ellipsize, "middle") == 0)
         label_config.ellipsize = PANGO_ELLIPSIZE_MIDDLE;
-    else if (stricmp(ellipsize, "end") == 0)
+    else if (strcasecmp(ellipsize, "end") == 0)
         label_config.ellipsize = PANGO_ELLIPSIZE_END;
     else
         label_config.ellipsize = PANGO_ELLIPSIZE_NONE;
@@ -226,11 +226,11 @@ LabelConfig *read_label_config_from_dialog()
     strcpy(label_config.font_family, font_family);
 
     // XAlign
-    gfloat xalign = (gfloat) read_config_value_as_double("xalign_spin");
+    gfloat xalign = (gfloat)read_config_value_as_double("xalign_spin");
     label_config.xalign = xalign;
 
     // YAlign
-    gfloat yalign = (gfloat) read_config_value_as_double("yalign_spin");
+    gfloat yalign = (gfloat)read_config_value_as_double("yalign_spin");
     label_config.yalign = yalign;
 
     // Dimensions
@@ -293,30 +293,29 @@ LabelConfig *read_label_config_from_widget(GtkWidget *widget)
     // Justification type
     GtkJustification jtype = gtk_label_get_justify(GTK_LABEL(widget));
     label_config.jtype = jtype;
-    
+
     // Ellipsize mode
     PangoEllipsizeMode ellipsize = gtk_label_get_ellipsize(GTK_LABEL(widget));
     label_config.ellipsize = ellipsize;
-    
+
     // Is wrap
     gboolean is_wrap = gtk_label_get_line_wrap(GTK_LABEL(widget));
     label_config.is_wrap = is_wrap;
-    
+
     // Is selectable
     gboolean is_selectable = gtk_label_get_selectable(GTK_LABEL(widget));
     label_config.is_selectable = is_selectable;
-    
+
     PangoContext *pcontext = gtk_widget_get_pango_context(widget);
     PangoFontDescription *font_desc = pango_context_get_font_description(pcontext);
     const char *family = font_desc ? pango_font_description_get_family(font_desc) : "default";
     int font_size = font_desc ? (pango_font_description_get_size(font_desc) / PANGO_SCALE) : 0;
-    
+
     // Font size
     label_config.font_size = font_size;
-    
+
     // Font family
     strcpy(label_config.font_family, family);
-
 
     // XAlign
     gfloat xalign = gtk_label_get_xalign(GTK_LABEL(widget));
@@ -325,7 +324,7 @@ LabelConfig *read_label_config_from_widget(GtkWidget *widget)
     // YAlign
     gfloat yalign = gtk_label_get_yalign(GTK_LABEL(widget));
     label_config.yalign = yalign;
-   
+
     // Dimensions
     GtkAllocation allocation;
     gtk_widget_get_allocation(widget, &allocation);

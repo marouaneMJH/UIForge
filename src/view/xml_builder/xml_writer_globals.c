@@ -1,4 +1,4 @@
-#include "./../../../include/widgets/View/xml_builder/xml_writer_globals.h"
+#include "./../../../include/widgets/view/xml_builder/xml_writer_globals.h"
 
 void print_tabs(FILE *output_file, int tabs_number)
 {

@@ -124,7 +124,7 @@ PanedConfig *read_paned_config_from_dialog()
 
     // Orientation
     const gchar *orientation = read_config_value_as_string("orientation_combo");
-    if (stricmp(orientation, "vertical") == 0)
+    if (strcasecmp(orientation, "vertical") == 0)
         paned_config.orientation = GTK_ORIENTATION_VERTICAL;
     else
         paned_config.orientation = GTK_ORIENTATION_HORIZONTAL;

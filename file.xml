@@ -7,25 +7,3 @@ id="win1"
 	has_header="false"
 	is_maximized="false"
 >
-	<box 
-		id="wid-1-"
-		width="986"
-		height="1101"
-		paned_order="1"
-		is_reorderable="false"
-		menu_right="1"
-		on_click=""
-	>
-		<button 
-			id="wid-2-"
-			width="986"
-			height="34"
-			paned_order="1"
-			is_reorderable="false"
-			menu_right="1"
-			on_click=""
-			label="imported"
-			use_underline="true"
-		/>
-	</box>
-</dialog>

@@ -158,20 +158,20 @@ FrameConfig *read_frame_config_from_dialog()
 
     // Shadow type
     const gchar *shadow_type = read_config_value_as_string("shadow_type_combo");
-    if (stricmp(shadow_type, "none") == 0)
+    if (strcasecmp(shadow_type, "none") == 0)
         frame_config.shadow_type = GTK_SHADOW_NONE;
-    else if (stricmp(shadow_type, "out") == 0)
+    else if (strcasecmp(shadow_type, "out") == 0)
         frame_config.shadow_type = GTK_SHADOW_OUT;
-    else if (stricmp(shadow_type, "etched in") == 0)
+    else if (strcasecmp(shadow_type, "etched in") == 0)
         frame_config.shadow_type = GTK_SHADOW_ETCHED_IN;
-    else if (stricmp(shadow_type, "etched out") == 0)
+    else if (strcasecmp(shadow_type, "etched out") == 0)
         frame_config.shadow_type = GTK_SHADOW_ETCHED_OUT;
     else
         frame_config.shadow_type = GTK_SHADOW_IN;
 
     // Label alignment
-    frame_config.label_xalign = (gfloat) read_config_value_as_double("label_xalign_spin");
-    frame_config.label_yalign = (gfloat) read_config_value_as_double("label_yalign_spin");
+    frame_config.label_xalign = (gfloat)read_config_value_as_double("label_xalign_spin");
+    frame_config.label_yalign = (gfloat)read_config_value_as_double("label_yalign_spin");
 
     // Dimensions
     Dimensions *dimensions = read_dimensions_config();

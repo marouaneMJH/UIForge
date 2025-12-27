@@ -173,7 +173,6 @@ void set_header_bar(GtkWidget *window, const gchar *title, const gchar *icon_pat
     // gtk_header_bar_set_decoration_layout(GTK_HEADER_BAR(header_bar), "menu:close");
     gtk_header_bar_set_decoration_layout(GTK_HEADER_BAR(header_bar), "icon:minimize,maximize,close");
 
-
     // Set the title of the header bar
     gtk_header_bar_set_title(GTK_HEADER_BAR(header_bar), title);
 
@@ -407,7 +406,7 @@ ViewConfig *read_view_config_from_dialog(gboolean update_mode)
     view_config->box_padding = box_padding;
 
     const gchar *pack_direction = read_config_value_as_string("pack_direction_combo");
-    if (stricmp(pack_direction, "end") == 0)
+    if (strcasecmp(pack_direction, "end") == 0)
         view_config->pack_direction = 0;
     else
         view_config->pack_direction = 1;
@@ -418,7 +417,7 @@ ViewConfig *read_view_config_from_dialog(gboolean update_mode)
 
     // Paned config
     const gchar *paned_order = read_config_value_as_string("paned_order_combo");
-    if (stricmp(paned_order, "First") == 0)
+    if (strcasecmp(paned_order, "First") == 0)
         view_config->paned_order = 1;
     else
         view_config->paned_order = 2;
@@ -718,13 +717,13 @@ GtkAlign read_align_config(gchar *input_combo)
     const gchar *align_text = read_config_value_as_string(input_combo);
     if (align_text)
     {
-        if (stricmp(align_text, "start") == 0)
+        if (strcasecmp(align_text, "start") == 0)
             return GTK_ALIGN_START;
-        else if (stricmp(align_text, "end") == 0)
+        else if (strcasecmp(align_text, "end") == 0)
             return GTK_ALIGN_END;
-        else if (stricmp(align_text, "baseline") == 0)
+        else if (strcasecmp(align_text, "baseline") == 0)
             return GTK_ALIGN_BASELINE;
-        else if (stricmp(align_text, "center") == 0)
+        else if (strcasecmp(align_text, "center") == 0)
             return GTK_ALIGN_CENTER;
         else
             return GTK_ALIGN_FILL;
@@ -734,13 +733,13 @@ GtkAlign read_align_config(gchar *input_combo)
 GtkPositionType read_position_config(gchar *input_combo, GtkPositionType default_position)
 {
     const gchar *icon_position = read_config_value_as_string(input_combo);
-    if (stricmp(icon_position, "top") == 0)
+    if (strcasecmp(icon_position, "top") == 0)
         return GTK_POS_TOP;
-    else if (stricmp(icon_position, "bottom") == 0)
+    else if (strcasecmp(icon_position, "bottom") == 0)
         return GTK_POS_BOTTOM;
-    else if (stricmp(icon_position, "left") == 0)
+    else if (strcasecmp(icon_position, "left") == 0)
         return GTK_POS_LEFT;
-    else if (stricmp(icon_position, "right") == 0)
+    else if (strcasecmp(icon_position, "right") == 0)
         return GTK_POS_RIGHT;
     else
         return default_position;
@@ -881,7 +880,7 @@ void write_view_config_to_dialog(ViewConfig *view_config)
     write_config_value_as_int("column_span_spin", view_config->column_span);
 
     // Menu properties
-    write_config_value_as_combo_index("menu_orientation_combo", stricmp(view_config->menu_orientation, "vertical") == 0 ? 0 : 1);
+    write_config_value_as_combo_index("menu_orientation_combo", strcasecmp(view_config->menu_orientation, "vertical") == 0 ? 0 : 1);
     write_config_value_as_int("menu_top_spin", view_config->menu_top);
     write_config_value_as_int("menu_bottom_spin", view_config->menu_bottom);
     write_config_value_as_int("menu_left_spin", view_config->menu_left);

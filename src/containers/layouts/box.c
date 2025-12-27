@@ -146,7 +146,7 @@ BoxConfig *read_box_config_from_dialog()
     const gchar *selected_orientation = read_config_value_as_string("orientation_combo");
     if (selected_orientation)
     {
-        if (stricmp(selected_orientation, "horizontal") == 0)
+        if (strcasecmp(selected_orientation, "horizontal") == 0)
             box_config.orientation = GTK_ORIENTATION_HORIZONTAL;
     }
 
@@ -154,9 +154,9 @@ BoxConfig *read_box_config_from_dialog()
     const gchar *baseline = read_config_value_as_string("baseline_combo");
     if (baseline)
     {
-        if (stricmp(baseline, "top") == 0)
+        if (strcasecmp(baseline, "top") == 0)
             box_config.baseline_position = GTK_BASELINE_POSITION_TOP;
-        else if (stricmp(baseline, "bottom") == 0)
+        else if (strcasecmp(baseline, "bottom") == 0)
             box_config.baseline_position = GTK_BASELINE_POSITION_BOTTOM;
     }
 

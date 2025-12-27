@@ -351,16 +351,15 @@ ComboTextBoxConfig *read_combo_text_box_config_from_dialog()
     gint default_index = read_config_value_as_int("default_index_spin");
     combo_text_box_config.default_index = default_index;
 
-
     // Read type property
     const gchar *type = read_config_value_as_string("type_combo");
-    if (stricmp(type, "month") == 0)
+    if (strcasecmp(type, "month") == 0)
         combo_text_box_config.type.type_counter = MONTH;
-    else if (stricmp(type, "day") == 0)
+    else if (strcasecmp(type, "day") == 0)
         combo_text_box_config.type.type_counter = DAY;
-    else if (stricmp(type, "year") == 0)
+    else if (strcasecmp(type, "year") == 0)
         combo_text_box_config.type.type_counter = YEAR;
-    else if (stricmp(type, "counter") == 0)
+    else if (strcasecmp(type, "counter") == 0)
         combo_text_box_config.type.type_counter = COUNTER;
     else
         combo_text_box_config.type.type_counter = NONE;
@@ -378,7 +377,7 @@ ComboTextBoxConfig *read_combo_text_box_config_from_dialog()
     int key = 0;
     int index = 0;
     gchar temp[MAX_VALUE_SIZE];
-    
+
     if (options)
     {
         while (options[key] != '\0' && options[key] != '\n')
@@ -390,36 +389,36 @@ ComboTextBoxConfig *read_combo_text_box_config_from_dialog()
             else
             {
                 temp[index] = '\0';
-    
+
                 ComboTextBoxOption *combo_text_box_option = g_new(ComboTextBoxOption, 1);
-                combo_text_box_option->key = g_strdup_printf("%d", key); 
+                combo_text_box_option->key = g_strdup_printf("%d", key);
                 combo_text_box_option->value = g_strdup(temp);
-    
+
                 if (!combo_text_box_config.options)
                     combo_text_box_config.options = g_ptr_array_new_with_free_func(g_free);
-    
+
                 g_ptr_array_add(combo_text_box_config.options, combo_text_box_option);
-    
-                index = 0; 
+
+                index = 0;
             }
             key++;
         }
-    
+
         if (index > 0)
         {
             temp[index] = '\0';
-    
+
             ComboTextBoxOption *combo_text_box_option = g_new(ComboTextBoxOption, 1);
-            combo_text_box_option->key = g_strdup_printf("%d", key); 
+            combo_text_box_option->key = g_strdup_printf("%d", key);
             combo_text_box_option->value = g_strdup(temp);
-    
+
             if (!combo_text_box_config.options)
                 combo_text_box_config.options = g_ptr_array_new_with_free_func(g_free);
-    
+
             g_ptr_array_add(combo_text_box_config.options, combo_text_box_option);
         }
     }
-    
+
     // Dimensions
     Dimensions *dimensions = read_dimensions_config();
     combo_text_box_config.dimensions.width = dimensions->width;

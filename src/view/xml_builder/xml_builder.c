@@ -1,4 +1,4 @@
-#include "./../../../include/widgets/View/xml_builder/xml_builder.h"
+#include "./../../../include/widgets/view/xml_builder/xml_builder.h"
 
 gboolean is_container(View *view)
 {
