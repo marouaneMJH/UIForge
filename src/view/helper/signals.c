@@ -2,7 +2,7 @@
 #include "./../../../include/widgets/view/signals.h"
 #include "./../../../include/widgets/view/view.h"
 #include "./create_new_widget_from_dialog.h"
-#include "./../../../include/widgets/View/widget_update.h"
+#include "./../../../include/widgets/view/widget_update.h"
 
 static View *parent_view = NULL;
 static gboolean is_relative_container = TRUE;
@@ -92,7 +92,7 @@ static void sig_open_my_dialog()
 
 static void sig_open_import_dialog()
 {
-    root_dialog_view_global = build_app(root_app, NULL,IMPORTDIALOG_TXT);
+    root_dialog_view_global = build_app(root_app, NULL, IMPORTDIALOG_TXT);
 
     if (root_dialog_view_global && root_dialog_view_global->widget)
         show_dialog(root_dialog_view_global->widget);
@@ -553,7 +553,7 @@ void display_available_scopes_in_combo(GtkWidget *scope_combo, View *current)
             return;
         }
 
-        if (stricmp(current->view_config->view_id, "viewer") == 0)
+        if (strcasecmp(current->view_config->view_id, "viewer") == 0)
             current = current->child;
 
         if (!current)
@@ -605,9 +605,9 @@ void set_available_scopes(const gchar *widget_type)
     // g_print("CURENT SCOPE: %s\n", current_scope);
     // gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_text_box), current_scope);
     // gtk_combo_box_set_active(GTK_COMBO_BOX(combo_text_box), 0);
-    if (stricmp(widget_type, "menu_item") == 0 || stricmp(widget_type, "menu") == 0)
+    if (strcasecmp(widget_type, "menu_item") == 0 || strcasecmp(widget_type, "menu") == 0)
     {
-        while (!GTK_IS_MENU_BAR(temp->widget) && stricmp(temp->view_config->view_id, "viewer"))
+        while (!GTK_IS_MENU_BAR(temp->widget) && strcasecmp(temp->view_config->view_id, "viewer"))
         {
             g_print("TEMP IN SCOPS: %s\n", temp->view_config->view_id);
             temp = temp->parent;
@@ -718,7 +718,7 @@ gboolean check_scope_back(View *root)
     g_print("SCOPE BACK: %s\n", scope_back);
 
     // If it is the default one don't change anything
-    if (stricmp(scope_back, "Default") == 0)
+    if (strcasecmp(scope_back, "Default") == 0)
         return TRUE;
 
     // check the root if it is fixed on the viewer at the first time or not
@@ -735,10 +735,10 @@ gboolean check_scope_back(View *root)
     g_print("TRACE MI: %s \n", root->view_config->view_id);
 
     // If I didn't found the scope target yet
-    if (stricmp(root->parent->view_config->view_id, scope_back) != 0)
+    if (strcasecmp(root->parent->view_config->view_id, scope_back) != 0)
     {
         // Menu item case
-        if (!root->child && GTK_IS_MENU_ITEM(root->widget) && stricmp(root->view_config->view_id, scope_back) == 0)
+        if (!root->child && GTK_IS_MENU_ITEM(root->widget) && strcasecmp(root->view_config->view_id, scope_back) == 0)
         {
             parent_view = root;
             is_relative_container = TRUE;
@@ -752,7 +752,7 @@ gboolean check_scope_back(View *root)
         if (root->child && !result)
             result = check_scope_back(root->child);
 
-        if (stricmp(root->view_config->view_id, scope_back) == 0 && !result)
+        if (strcasecmp(root->view_config->view_id, scope_back) == 0 && !result)
         {
             parent_view = root;
             is_relative_container = TRUE;
@@ -1580,8 +1580,6 @@ static void sig_create_new_view(GtkWidget *widget, gpointer data)
     // gtk_widget_show_all(gtk_widget_get_toplevel(root_view_global->widget));
 }
 
-
-
 static void sig_create_notebook(GtkWidget *widget, gpointer data)
 {
 
@@ -1611,7 +1609,6 @@ static void sig_create_notebook(GtkWidget *widget, gpointer data)
 
     gtk_widget_show_all(gtk_widget_get_toplevel(root_view_global->widget));
 }
-
 
 void connect_signals(View *view)
 {
@@ -1846,10 +1843,6 @@ static void sig_import_ui_from_xml(GtkWidget *widget, gpointer data)
 
     const char *path = gtk_entry_get_text(GTK_ENTRY(entry_viewer->widget));
 
-    
-
-
-
     viewer->child = build_app(root_app, NULL, path);
     if (!viewer->child)
     {
@@ -1885,7 +1878,6 @@ static void sig_import_ui_from_xml(GtkWidget *widget, gpointer data)
 
     gtk_widget_show_all(content_view->widget);
     // sig_destroy_dialog(widget,NULL);
-   
 }
 
 static void sig_refrech_crud_ui(GtkWidget *widget, gpointer data)

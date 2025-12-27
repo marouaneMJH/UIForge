@@ -297,15 +297,15 @@ EntryConfig *read_entry_config_from_dialog()
 
     // Input purpose
     const gchar *purpose = read_config_value_as_string("type_combo");
-    if (stricmp(purpose, "number") == 0)
+    if (strcasecmp(purpose, "number") == 0)
         entry_config.purpose = GTK_INPUT_PURPOSE_NUMBER;
-    else if (stricmp(purpose, "email") == 0)
+    else if (strcasecmp(purpose, "email") == 0)
         entry_config.purpose = GTK_INPUT_PURPOSE_EMAIL;
-    else if (stricmp(purpose, "name") == 0)
+    else if (strcasecmp(purpose, "name") == 0)
         entry_config.purpose = GTK_INPUT_PURPOSE_NAME;
-    else if (stricmp(purpose, "password") == 0)
+    else if (strcasecmp(purpose, "password") == 0)
         entry_config.purpose = GTK_INPUT_PURPOSE_PASSWORD;
-    else if (stricmp(purpose, "pin") == 0)
+    else if (strcasecmp(purpose, "pin") == 0)
         entry_config.purpose = GTK_INPUT_PURPOSE_PIN;
     else
         entry_config.purpose = GTK_INPUT_PURPOSE_FREE_FORM;
@@ -395,7 +395,7 @@ EntryConfig *read_entry_config_from_widget(GtkWidget *widget)
 
     // Opacity
     // entry_config.opacity = gtk_widget_get_opacity(widget);
-   
+
     // Dimensions
     GtkAllocation allocation;
     gtk_widget_get_allocation(widget, &allocation);

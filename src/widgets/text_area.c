@@ -132,11 +132,11 @@ TextAreaConfig *read_text_area_config_from_dialog()
 
     // Wrap mode
     const gchar *wrap_mode = read_config_value_as_string("wrap_mode_combo");
-    if (stricmp(wrap_mode, "none") == 0)
+    if (strcasecmp(wrap_mode, "none") == 0)
         text_area_config.wrap_mode = GTK_WRAP_NONE;
-    else if (stricmp(wrap_mode, "word") == 0)
+    else if (strcasecmp(wrap_mode, "word") == 0)
         text_area_config.wrap_mode = GTK_WRAP_WORD;
-    else if (stricmp(wrap_mode, "word char") == 0)
+    else if (strcasecmp(wrap_mode, "word char") == 0)
         text_area_config.wrap_mode = GTK_WRAP_WORD_CHAR;
     else
         text_area_config.wrap_mode = GTK_WRAP_CHAR;
@@ -195,10 +195,10 @@ TextAreaConfig *read_text_area_config_from_widget(GtkWidget *widget)
     PangoFontDescription *font_desc = pango_context_get_font_description(pcontext);
     // const char *family = font_desc ? pango_font_description_get_family(font_desc) : "default";
     int font_size = font_desc ? (pango_font_description_get_size(font_desc) / PANGO_SCALE) : 0;
-    
+
     // Font size
     text_area_config.font_size = font_size;
-    
+
     // Wrap mode
     GtkWrapMode wrap_mode = gtk_text_view_get_wrap_mode(GTK_TEXT_VIEW(widget));
     text_area_config.wrap_mode = wrap_mode;
@@ -206,7 +206,7 @@ TextAreaConfig *read_text_area_config_from_widget(GtkWidget *widget)
     // Editable
     gboolean is_editable = gtk_text_view_get_editable(GTK_TEXT_VIEW(widget));
     text_area_config.is_editable = is_editable;
-   
+
     // Dimensions
     GtkAllocation allocation;
     gtk_widget_get_allocation(widget, &allocation);

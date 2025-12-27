@@ -3,10 +3,11 @@
 #include <gtk/gtk.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <strings.h>
 
 #include "./constants.h"
 #include "widgets/view/view.h"
-#include "./widgets/View/xml_builder/xml_writer_globals.h"
+#include "./widgets/view/xml_builder/xml_writer_globals.h"
 
 /* Global macros  */
 
@@ -37,7 +38,6 @@ extern GtkApplication *root_app;
 
 extern View *new_root_view_global;
 extern View *root_crud_ui;
-
 
 // We should rename this from global to core wich means system libs and has more signification
 

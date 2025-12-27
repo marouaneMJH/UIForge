@@ -1,6 +1,6 @@
 // #include "./../../../include/widgets/dialogs/dialog.h"
 #include "./../../../include/widgets/dialogs/dialog.h"
-#include "./../../../include/widgets/View/signals.h"
+#include "./../../../include/widgets/view/signals.h"
 
 ViewConfig *configure_dialog_property(DialogConfig *dialog_config, ViewConfig *view_config, gchar *property, gchar *value, int *status)
 {

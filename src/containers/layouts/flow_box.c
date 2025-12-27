@@ -164,11 +164,11 @@ FlowBoxConfig *read_flow_box_config_from_dialog()
 
     // Selection mode
     const gchar *selection_mode = read_config_value_as_string("selection_mode_combo");
-    if (stricmp(selection_mode, "none") == 0)
+    if (strcasecmp(selection_mode, "none") == 0)
         flow_box_config.selection_mode = GTK_SELECTION_NONE;
-    else if (stricmp(selection_mode, "browse") == 0)
+    else if (strcasecmp(selection_mode, "browse") == 0)
         flow_box_config.selection_mode = GTK_SELECTION_BROWSE;
-    else if (stricmp(selection_mode, "multiple") == 0)
+    else if (strcasecmp(selection_mode, "multiple") == 0)
         flow_box_config.selection_mode = GTK_SELECTION_MULTIPLE;
     else
         flow_box_config.selection_mode = GTK_SELECTION_SINGLE;
@@ -210,7 +210,6 @@ FlowBoxConfig *read_flow_box_config_from_dialog()
     memcpy(flow_box_config_ptr, &flow_box_config, sizeof(FlowBoxConfig));
     return flow_box_config_ptr;
 }
-
 
 FlowBoxConfig *read_flow_box_config_from_widget(GtkWidget *widget)
 {

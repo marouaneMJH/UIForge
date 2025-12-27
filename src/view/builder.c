@@ -2,6 +2,126 @@
 #include "helper/read_tag.h"
 #include "helper/link_with_container.h"
 
+// Factory pattern for SOLID principles
+typedef View *(*WidgetReaderFunction)(FILE *, View *, gboolean);
+typedef View *(*AppWidgetReaderFunction)(FILE *, GtkApplication *, View *, gboolean);
+
+typedef struct
+{
+    const gchar *tag_name;
+    WidgetReaderFunction reader_func;
+    AppWidgetReaderFunction app_reader_func;
+} WidgetFactory;
+
+// Forward declarations for reader functions
+View *read_dialog_tag_wrapper(FILE *index, View *parent_view, gboolean is_relative_container);
+
+// Widget factory registry - adheres to Open/Closed Principle
+static const WidgetFactory widget_factories[] = {
+    {"window", NULL, (AppWidgetReaderFunction)read_window_tag},
+    {"scrolled_window", read_scrolled_window_tag, NULL},
+    {"box", read_box_tag, NULL},
+    {"fixed", read_fixed_tag, NULL},
+    {"stack", read_stack_tag, NULL},
+    {"notebook", read_notebook_tag, NULL},
+    {"button", read_button_tag, NULL},
+    {"switch_button", read_switch_button_tag, NULL},
+    {"entry", read_entry_tag, NULL},
+    {"label", read_label_tag, NULL},
+    {"separator", read_separator_tag, NULL},
+    {"menu_bar", read_menu_bar_tag, NULL},
+    {"menu", read_menu_tag, NULL},
+    {"menu_item", read_menu_item_tag, NULL},
+    {"radio_button", read_radio_button_tag, NULL},
+    {"spin_button", read_spin_button_tag, NULL},
+    {"flow_box", read_flow_box_tag, NULL},
+    {"grid", read_grid_tag, NULL},
+    {"paned", read_paned_tag, NULL},
+    {"image", read_image_tag, NULL},
+    {"progress_bar", read_progress_bar_tag, NULL},
+    {"check_button", read_check_button_tag, NULL},
+    {"link_button", read_link_button_tag, NULL},
+    {"frame", read_frame_tag, NULL},
+    {"text_area", read_text_area_tag, NULL},
+    {"overlay", read_overlay_tag, NULL},
+    {"dialog", read_dialog_tag_wrapper, NULL},
+    {"combo_text_box", read_combo_text_box_tag, NULL},
+    {"toggle_button", read_toggle_button_tag, NULL},
+    {"color_button", read_color_button_tag, NULL},
+    {"expander", read_expander_tag, NULL},
+    {"event_box", read_event_box_tag, NULL},
+    {NULL, NULL, NULL} // Sentinel
+};
+
+// Helper function to find widget factory - Single Responsibility Principle
+static const WidgetFactory *find_widget_factory(const gchar *widget_tag)
+{
+    if (!widget_tag)
+        return NULL;
+
+    for (const WidgetFactory *factory = widget_factories; factory->tag_name; factory++)
+    {
+        if (g_strcmp0(factory->tag_name, widget_tag) == 0)
+        {
+            return factory;
+        }
+    }
+    return NULL;
+}
+
+// Widget processor function - Single Responsibility Principle
+static View *process_widget(const gchar *widget_tag, FILE *index, GtkApplication *app,
+                            View *parent_view, gboolean is_relative_container,
+                            View **root_view, View **root_menu_bar_view)
+{
+
+    const WidgetFactory *factory = find_widget_factory(widget_tag);
+
+    if (!factory)
+    {
+        g_print("ERROR: Widget << %s >> not found\n", widget_tag);
+        return parent_view;
+    }
+
+    View *new_view = NULL;
+
+    if (factory->app_reader_func)
+    {
+        new_view = factory->app_reader_func(index, app, parent_view, is_relative_container);
+
+        // Special handling for root views
+        if (g_strcmp0(widget_tag, "window") == 0)
+        {
+            *root_view = new_view;
+            root_view_global = new_view;
+        }
+    }
+    else if (factory->reader_func)
+    {
+        new_view = factory->reader_func(index, parent_view, is_relative_container);
+
+        // Special handling for specific widgets
+        if (g_strcmp0(widget_tag, "menu_bar") == 0)
+        {
+            *root_menu_bar_view = new_view;
+        }
+        else if (g_strcmp0(widget_tag, "dialog") == 0)
+        {
+            *root_view = new_view;
+            root_dialog_view_global = new_view;
+            g_print("Dialog view readed\n");
+        }
+    }
+
+    return new_view ? new_view : parent_view;
+}
+
+// Wrapper functions for compatibility
+View *read_dialog_tag_wrapper(FILE *index, View *parent_view, gboolean is_relative_container)
+{
+    return read_dialog_tag(index, parent_view, is_relative_container);
+}
+
 static gint wid = 0;
 void add_command(const gchar *label, gint x, gint y, const gchar *signal_option, View *commands_container, View *root_view)
 {
@@ -28,10 +148,9 @@ void add_command(const gchar *label, gint x, gint y, const gchar *signal_option,
 
     link_with_container(commands_container->widget, btn_widget, view_conf);
     g_print("Command added\n");
-
 }
 
-void add_custom_command(ViewConfig* view_conf, const gchar *label, gint x, gint y, View *commands_container, View *root_view)
+void add_custom_command(ViewConfig *view_conf, const gchar *label, gint x, gint y, View *commands_container, View *root_view)
 {
 
     if (!view_conf || !root_view || !commands_container)
@@ -39,9 +158,9 @@ void add_custom_command(ViewConfig* view_conf, const gchar *label, gint x, gint 
 
     strcpy(view_conf->view_id, g_strconcat("cmd-", g_strdup_printf("%d", wid++), NULL));
     view_conf->signal.event_type = SIG_ON_CLICK;
-    // if (view_conf->signal.sig_handler[0] == '\0') 
+    // if (view_conf->signal.sig_handler[0] == '\0')
     // {
-        // strcpy(view_conf->signal.sig_handler, signal);
+    // strcpy(view_conf->signal.sig_handler, signal);
     // }
 
     view_conf->position_x = x;
@@ -59,11 +178,6 @@ void add_custom_command(ViewConfig* view_conf, const gchar *label, gint x, gint 
     connect_signals(create_view(btn_widget, view_conf));
     link_with_container(commands_container->widget, btn_widget, view_conf);
     g_print("Command added\n");
-}
-
-static void sig_entry_activate(GtkWidget *entry, gpointer data)
-{
-    g_print("Hellow entry");
 }
 
 View *create_view(GtkWidget *widget, ViewConfig *view_config)
@@ -105,111 +219,18 @@ gchar *read_tag(FILE *index)
     return tag;
 }
 
-int get_view_index(gchar *widget_tag) // Why FILE *index
+// Legacy function kept for compatibility but now uses factory pattern
+int get_view_index(gchar *widget_tag)
 {
     if (!widget_tag)
         return -1;
 
-    if (g_strcmp0(widget_tag, "window") == 0)
-        return WindowTag;
-
-    if (g_strcmp0(widget_tag, "scrolled_window") == 0)
-        return ScrolledWindowTag;
-
-    if (g_strcmp0(widget_tag, "box") == 0)
-        return BoxTag;
-
-    if (g_strcmp0(widget_tag, "fixed") == 0)
-        return FixedTag;
-
-    if (g_strcmp0(widget_tag, "stack") == 0)
-        return StackTag;
-
-    if (g_strcmp0(widget_tag, "notebook") == 0)
-        return NotebookTag;
-
-    if (g_strcmp0(widget_tag, "button") == 0)
-        return ButtonTag;
-
-    if (g_strcmp0(widget_tag, "entry") == 0)
-        return EntryTag;
-
-    if (g_strcmp0(widget_tag, "label") == 0)
-        return LabelTag;
-
-    if (g_strcmp0(widget_tag, "separator") == 0)
-        return SeparatorTag;
-
-    if (g_strcmp0(widget_tag, "menu_bar") == 0)
-        return MenuBarTag;
-
-    if (g_strcmp0(widget_tag, "menu") == 0)
-        return MenuTag;
-
-    if (g_strcmp0(widget_tag, "menu_item") == 0)
-        return MenuItemTag;
-
-    if (g_strcmp0(widget_tag, "radio_button") == 0)
-        return RadioButtonTag;
-
-    if (g_strcmp0(widget_tag, "image") == 0)
-        return ImageTag;
-
-    if (g_strcmp0(widget_tag, "spin_button") == 0)
-        return SpinButtonTag;
-
-    if (g_strcmp0(widget_tag, "flow_box") == 0)
-        return FlowBoxTag;
-
-    if (g_strcmp0(widget_tag, "list_box") == 0)
-        return ListBoxTag;
-
-    if (g_strcmp0(widget_tag, "grid") == 0)
-        return GridTag;
-
-    if (g_strcmp0(widget_tag, "paned") == 0)
-        return PanedTag;
-
-    if (g_strcmp0(widget_tag, "link_button") == 0)
-        return LinkButtonTag;
-
-    if (g_strcmp0(widget_tag, "switch_button") == 0)
-        return SwitchButtonTag;
-
-    if (g_strcmp0(widget_tag, "check_button") == 0)
-        return CheckButtonTag;
-
-    if (g_strcmp0(widget_tag, "progress_bar") == 0)
-        return ProgressBarTag;
-    if (g_strcmp0(widget_tag, "combo_text_box") == 0)
-        return ComboTextBoxTag;
-
-    if (g_strcmp0(widget_tag, "dialog") == 0)
-        return DialogTag;
-
-    if (g_strcmp0(widget_tag, "frame") == 0)
-        return FrameTag;
-
-    if (g_strcmp0(widget_tag, "text_area") == 0)
-        return TextAreaTag;
-
-    if (g_strcmp0(widget_tag, "overlay") == 0)
-        return OverlayTag;
-
-    if (g_strcmp0(widget_tag, "combo_text_box") == 0)
-        return ComboTextBoxTag;
-
-    if (g_strcmp0(widget_tag, "toggle_button") == 0)
-        return ToggleButtonTag;
-
-    if (g_strcmp0(widget_tag, "color_button") == 0)
-        return ColorButtonTag;
-
-    if (g_strcmp0(widget_tag, "expander") == 0)
-        return ExpanderTag;
-
-    if (g_strcmp0(widget_tag, "event_box") == 0)
-        return EventBoxTag;
+    const WidgetFactory *factory = find_widget_factory(widget_tag);
+    if (factory)
+    {
+        // Return index based on position in factory array
+        return (int)(factory - widget_factories);
+    }
 
     return -1;
 }
@@ -399,6 +420,7 @@ View *build_app(GtkApplication *app, View *root_view, const gchar *file_path)
         return NULL;
     }
 
+    // !
     g_print("Index file opened\n");
 
     View *parent_view = root_view;
@@ -427,8 +449,14 @@ View *build_app(GtkApplication *app, View *root_view, const gchar *file_path)
             char next_char = fgetc(index);
             if (next_char == '/')
             {
+                if (!parent_view)
+                {
+                    ("Error: Parent view is NULL while closing tag\n");
+                    break;
+                }
                 is_relative_container = FALSE;
                 parent_view = parent_view->parent;
+                // !
                 g_print("Parent view changed\n");
                 continue;
             }
@@ -444,204 +472,16 @@ View *build_app(GtkApplication *app, View *root_view, const gchar *file_path)
                 // Read tag and check if exists
                 widget_tag = read_tag(index);
 
-                // TODO: if the tag = NULL then ignore the tag and Display an error message
-
                 // Get the widget index
                 widget_index = get_view_index(widget_tag);
             }
 
-            switch (widget_index)
-            {
-            case WindowTag:
-                // Read window tag
-                parent_view = read_window_tag(index, app, parent_view, is_relative_container);
+            // Factory pattern replaces switch statement - follows Open/Closed Principle
+            parent_view = process_widget(widget_tag, index, app, parent_view,
+                                         is_relative_container, &root_view, &root_menu_bar_view);
 
-                // Set window as root view parent to be returned
-                root_view = parent_view;
-
-                root_view_global = parent_view;
-
-                // Update container flag
-                is_relative_container = is_container_view(index);
-
-                break;
-            case BoxTag:
-
-                parent_view = read_box_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-            case FixedTag:
-
-                parent_view = read_fixed_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-            case FlowBoxTag:
-
-                parent_view = read_flow_box_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-            case PanedTag:
-                parent_view = read_paned_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-            case NotebookTag:
-                parent_view = read_notebook_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-            case GridTag:
-                parent_view = read_grid_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-            case EntryTag:
-
-                parent_view = read_entry_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-            case RadioButtonTag:
-
-                parent_view = read_radio_button_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-
-            case ButtonTag:
-
-                parent_view = read_button_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-
-            case ImageTag:
-                parent_view = read_image_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-
-            case MenuBarTag:
-                parent_view = read_menu_bar_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                root_menu_bar_view = parent_view;
-
-                break;
-            case MenuTag:
-                parent_view = read_menu_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-            case MenuItemTag:
-
-                parent_view = read_menu_item_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                // TODO: Check why it works
-                // parent_view = menu_item_view;
-
-                // gtk_menu_shell_append(GTK_MENU_SHELL(root_menu_bar_view->widget), menu_item_view->widget);
-
-                break;
-            case SpinButtonTag:
-                parent_view = read_spin_button_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-            case LabelTag:
-                parent_view = read_label_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-            case SeparatorTag:
-                parent_view = read_separator_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-            case CheckButtonTag:
-                parent_view = read_check_button_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-            case LinkButtonTag:
-                parent_view = read_link_button_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-            case ScrolledWindowTag:
-                parent_view = read_scrolled_window_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-            case ProgressBarTag:
-
-                parent_view = read_progress_bar_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-
-                break;
-            case SwitchButtonTag:
-                parent_view = read_switch_button_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-            case StackTag:
-                parent_view = read_stack_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-            case FrameTag:
-
-                parent_view = read_frame_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-
-            case TextAreaTag:
-
-                parent_view = read_text_area_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-            case OverlayTag:
-
-                parent_view = read_overlay_tag(index, parent_view, is_relative_container);
-            case DialogTag:
-                parent_view = read_dialog_tag(index, parent_view, is_relative_container);
-                root_view = parent_view;
-                root_dialog_view_global = parent_view;
-                is_relative_container = is_container_view(index);
-                g_print("Dialog view readed\n");
-                break;
-
-            case ComboTextBoxTag:
-
-                parent_view = read_combo_text_box_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-
-            case ToggleButtonTag:
-                parent_view = read_toggle_button_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-
-            case ColorButtonTag:
-                parent_view = read_color_button_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-
-            case ExpanderTag:
-                parent_view = read_expander_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-
-            case EventBoxTag:
-                parent_view = read_event_box_tag(index, parent_view, is_relative_container);
-                is_relative_container = is_container_view(index);
-                break;
-
-            // TODO : Complete other widgets
-            default:
-                stop = TRUE;
-                fclose(index);
-                g_print("ERROR: %d => Widget << %s >> not found\n", widget_index, widget_tag);
-                //  exit(EXIT_FAILURE);
-                break;
-            } // end of switch
+            // Update container flag
+            is_relative_container = is_container_view(index);
 
             free(widget_tag);
         }

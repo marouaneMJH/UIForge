@@ -152,13 +152,13 @@ StackConfig *read_stack_config_from_dialog()
 
     // Transition type
     const gchar *transition_type = read_config_value_as_string("transition_type_combo");
-    if (stricmp(transition_type, "slide left") == 0)
+    if (strcasecmp(transition_type, "slide left") == 0)
         stack_config.transition_type = GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT;
-    else if (stricmp(transition_type, "slide right") == 0)
+    else if (strcasecmp(transition_type, "slide right") == 0)
         stack_config.transition_type = GTK_STACK_TRANSITION_TYPE_SLIDE_RIGHT;
-    else if (stricmp(transition_type, "slide up") == 0)
+    else if (strcasecmp(transition_type, "slide up") == 0)
         stack_config.transition_type = GTK_STACK_TRANSITION_TYPE_SLIDE_UP;
-    else if (stricmp(transition_type, "slide down") == 0)
+    else if (strcasecmp(transition_type, "slide down") == 0)
         stack_config.transition_type = GTK_STACK_TRANSITION_TYPE_SLIDE_DOWN;
     else
         stack_config.transition_type = GTK_STACK_TRANSITION_TYPE_CROSSFADE;

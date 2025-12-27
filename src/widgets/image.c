@@ -212,17 +212,17 @@ ImageConfig *read_image_config_from_dialog()
 
     // Image type
     const gchar *type = read_config_value_as_string("type_combo");
-    if (stricmp(type, "icon") == 0)
+    if (strcasecmp(type, "icon") == 0)
         image_config.type = IMAGE_ICON;
-    else if (stricmp(type, "icon name") == 0)
+    else if (strcasecmp(type, "icon name") == 0)
         image_config.type = IMAGE_ICON_NAME;
-    else if (stricmp(type, "file") == 0)
+    else if (strcasecmp(type, "file") == 0)
         image_config.type = IMAGE_FILE;
-    else if (stricmp(type, "animation") == 0)
+    else if (strcasecmp(type, "animation") == 0)
         image_config.type = IMAGE_ANIMATION;
-    else if (stricmp(type, "resource") == 0)
+    else if (strcasecmp(type, "resource") == 0)
         image_config.type = IMAGE_RESOURCE;
-    else if (stricmp(type, "empty") == 0)
+    else if (strcasecmp(type, "empty") == 0)
         image_config.type = IMAGE_EMPTY;
     else
         image_config.type = IMAGE_PIXBUF;
