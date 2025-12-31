@@ -172,6 +172,6 @@ The XML is:
 
 * Declarative
 * Explicit
-* Human-readable
+* Human-readable 
 
 It is meant to be **edited, reviewed, and versioned**.
