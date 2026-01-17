@@ -84,16 +84,16 @@ static inline void property_registry_dispatch(PropertyRegistry *reg,
 /*
  * PHASE 1: Setter definitions (file scope)
  */
-#define STR_DEF(type, field)                                                           \
+#define STR_DEF(type, field) \
     static void set_##field(type *c, const char *v) { strcpy(c->field, conv_str(v)); }
 
-#define INT_DEF(type, field)                                                    \
+#define INT_DEF(type, field) \
     static void set_##field(type *c, const char *v) { c->field = conv_int(v); }
 
-#define BOOL_DEF(type, field)                                                    \
+#define BOOL_DEF(type, field) \
     static void set_##field(type *c, const char *v) { c->field = conv_bool(v); }
 
-#define ENUM_DEF(type, field, map)                                                  \
+#define ENUM_DEF(type, field, map) \
     static void set_##field(type *c, const char *v) { c->field = map##_lookup(v); }
 
 /*
