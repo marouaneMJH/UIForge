@@ -30,10 +30,10 @@
         .tooltip = "\0",                       \
         .dimensions = DEFAULT_MENU_DIMENSIONS, \
         .margins = DEFAULT_MENU_MARGIN,        \
-        .hexpand = FALSE,                       \
-        .vexpand = FALSE,                       \
-        .halign = GTK_ALIGN_FILL,               \
-        .valign = GTK_ALIGN_FILL,               \
+        .hexpand = FALSE,                      \
+        .vexpand = FALSE,                      \
+        .halign = GTK_ALIGN_FILL,              \
+        .valign = GTK_ALIGN_FILL,              \
         .bg_color = "\0",                      \
         .text_color = "\0"}
 // .margin = DEFAULT_MENU_MARGIN,
@@ -44,12 +44,12 @@ typedef struct
     gboolean reserve_toggle_size; // Reserve the space for checkbox/radio button ...
     guint monitor_num;            // Associate the monitor in multiple monitors setup
     gchar tooltip[MAX_TOOLTIP_SIZE];
-    
+
     // gchar title[MAX_TITLE_SIZE]; // Add title in case of tear-off menu
     GtkAccelGroup *accel_group; // Add accel path (keyboard shortcuts)
-    GdkScreen *screen;            // Associate to the parent screen or else
+    GdkScreen *screen;          // Associate to the parent screen or else
     gchar accel_path[MAX_ACCEL_PATH_SIZE];
-    
+
     gboolean hexpand;
     gboolean vexpand;
     GtkAlign halign;

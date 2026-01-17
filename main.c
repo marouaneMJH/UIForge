@@ -19,11 +19,11 @@ static void activate(GtkApplication *app, gpointer user_data)
         return;
     }
 
-    add_command("Create button", 10, 10, "button", commands_container, root_view);
-    add_command("Create notebook", 100, 10, "notebook", commands_container, root_view);
+    // add_command("Create button", 10, 10, "button", commands_container, root_view);
+    // add_command("Create notebook", 100, 10, "notebook", commands_container, root_view);
 
-    strcpy(view_conf->signal.sig_handler, "sig_open_import_dialog");
-    add_custom_command(view_conf, "Print hello", 10, 50, commands_container, root_view);
+    // strcpy(view_conf->signal.sig_handler, "sig_open_import_dialog");
+    // add_custom_command(view_conf, "Print hello", 10, 50, commands_container, root_view);
 
     show_window(window);
 }
