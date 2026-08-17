@@ -30,16 +30,16 @@
 
 #define DEFAULT_BUTTON                                     \
     {                                                      \
-        .label = "Click here",                             \
+        .label[0] = '\0',                             \
         .is_sensitive = TRUE,                              \
         .is_visible = TRUE,                                \
-        .tooltip = "\0",                                   \
+        .tooltip[0] = '\0',                                   \
         .dimensions = DEFAULT_BUTTON_DIMENSIONS,           \
         .icon_dimensions = DEFAULT_BUTTON_ICON_DIMENSIONS, \
         .margins = DEFAULT_BUTTON_MARGINS,                 \
         .hexpand = FALSE,                                  \
         .vexpand = FALSE,                                  \
-        .icon_path = "\0",                                 \
+        .icon_path[0] = '\0',                                 \
         .halign = GTK_ALIGN_FILL,                          \
         .valign = GTK_ALIGN_FILL,                          \
         .always_show_image = TRUE,                         \
@@ -47,10 +47,10 @@
         .use_underline = FALSE,                            \
         .use_stock = FALSE,                                \
         .icon_position = GTK_POS_LEFT,                     \
-        .bg_color = "\0",                                  \
+        .bg_color[0] = '\0',                                  \
         .font_size = 10,                                   \
-        .bg_image = "\0",                                  \
-        .color = "\0"}
+        .bg_image[0] = '\0',                                  \
+        .color[0] = '\0'}
 
 typedef struct
 {

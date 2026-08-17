@@ -1,0 +1,59 @@
+<dialog id="dialog"
+    title="Message "
+    width="300"
+    height="100"
+    icon_path="assets/images/programer.jpg"
+    icon_name="folder"
+    hint_type="dialog"
+    is_modal="true"
+    on_response="sig_dialog_response"
+    has_header="true">
+
+    <box id="bxV" orientation="vertical">
+        <box id="bxS" orientation="horizontal">
+            <label
+                id="bg_color_label"
+                label_text="Backgroud color"
+                yalign="0.5"
+                box_expand="true"
+                box_fill="true"
+            />
+            <box
+                spacing="0"
+                orientation="horizontal"
+            >
+                <entry
+                    id="bg_color_entry"
+                    placeholder_text="eg: #FFFFFF"
+                    box_expand="true"
+                    box_fill="true"
+                />
+                <color_button
+                    id="bg_bg_color_button"
+                    on_color_set="sig_fill_entry_bg_color_text"
+                />
+            </box>
+        </box>
+        <label
+            id="view_id_label"
+            label_text="image path"
+            yalign="0.5"
+            box_expand="true"
+            box_fill="true"
+        />
+        <entry
+            id="view_id_entry"
+            placeholder_text="eg: path"
+            box_expand="true"
+            box_fill="true"
+        />
+        <button
+            id="btnAplly"
+            label="Apply"
+            on_click="sig_change_friend_bg_color"
+            param1="wid-1-"
+            param2="red"
+        />
+    </box>
+
+</dialog>

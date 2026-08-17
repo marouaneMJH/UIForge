@@ -8,36 +8,25 @@ id="win1"
 	is_maximized="false"
 >
 	<box 
-		id="wid-1-"
-		bg_color="#FFFFFF"
+		id="wid-1-bx"
+		bg_color="#FF7800"
 		width="986"
-		height="810"
+		height="967"
 		paned_order="1"
 		is_reorderable="false"
 		menu_right="1"
 		on_click=""
 	>
-		<button 
-			id="wid-2-"
+		<box 
+			id="wid-10-bx2"
+			bg_color="#ED333B"
 			width="986"
-			height="34"
 			paned_order="1"
 			is_reorderable="false"
 			menu_right="1"
-			on_click="sig_change_friend_bg_color"
-			label="CHANGER FENETRE"
-			use_underline="true"
-		/>
-		<button 
-			id="wid-3-"
-			width="986"
-			height="34"
-			paned_order="1"
-			is_reorderable="false"
-			menu_right="1"
-			on_click="sig_create_notebook"
-			label="CREER ONGLET"
-			use_underline="true"
-		/>
+			on_click=""
+			orientation="horizontal"
+		>
+		</box>
 	</box>
 </dialog>

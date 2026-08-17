@@ -3,6 +3,7 @@
 
 #include "./../../global.h"
 
+
 /**
  * @brief Most commonly used GTK3 signals
  *
@@ -82,6 +83,18 @@ typedef struct
     SignalType event_type;
 } SignalConfig;
 
+
+/**
+ * @brief structure for handle signales parametres
+ * //todo variable: checck if on_cllick signal activate or not and also for other signales
+ */
+typedef struct
+{
+    gchar params[PARAM_COUNT][MAX_SIGNAL_NAME_SIZE]; // First function parameter
+
+} ParamNode;
+
+
 /*** Start Color Button ***/
 /**
  * @brief this signale used on button color to change friend bg color
@@ -113,8 +126,8 @@ gboolean check_relative_container(GtkWidget *widget);
 
 static void sig_import_ui_from_xml(GtkWidget *widget, gpointer data); 
 
-
 static void sig_refrech_crud_ui(GtkWidget *widget, gpointer data);
 
+extern void sig_properties_dialog(GtkWidget *widget, gpointer data);
 
 #endif

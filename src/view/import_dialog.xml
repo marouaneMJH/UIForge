@@ -1,0 +1,34 @@
+<dialog id="dialog"
+    title="Import "
+    width="300"
+    height="100"
+    icon_path="assets/images/programer.jpg"
+    icon_name="folder"
+    hint_type="dialog"
+    is_modal="true"
+    on_response="sig_dialog_response"
+    has_header="true">
+
+    <box id="bxV" orientation="vertical">
+        <label
+            id="view_id_label"
+            label_text="file path"
+            yalign="0.5"
+            box_expand="true"
+            box_fill="true"
+        />
+        <entry
+            id="entry_import_id"
+            placeholder_text="eg: path"
+            box_expand="true"
+            box_fill="true"
+        />
+        <button
+            id="btnAplly"
+            label="Apply"
+            on_click="sig_import_ui_from_xml"
+           
+        />
+    </box>
+
+</dialog>

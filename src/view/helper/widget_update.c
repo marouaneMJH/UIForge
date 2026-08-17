@@ -1717,13 +1717,14 @@ View *update_scrolled_window_config()
     g_print("UPDATING BOX WIDGET\n");
 
     ScrolledWindowConfig *scrolled_window_config = read_scrolled_window_config_from_dialog();
+    g_print("1");
 
     ViewConfig *view_config = read_view_config_from_dialog(TRUE);
-
+    g_print("2");
     GtkWidget *scrolled_window_widget = create_scrolled_window(*scrolled_window_config);
-
+    g_print("3");
     View *updated_scrolled_window_view = create_view(scrolled_window_widget, view_config);
-
+    g_print("4");
     return apply_update(updated_scrolled_window_view, view_config);
 }
 

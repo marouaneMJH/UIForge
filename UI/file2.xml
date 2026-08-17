@@ -1,0 +1,363 @@
+<dialog
+    id="sw1"
+>
+    <box
+        id="box1"
+    >
+        <menu_bar
+            id="menu_bar1"
+            bg_color="white"
+        >
+
+            <menu_item
+                id="menu_item1"
+                label="_MonChoix"
+            />
+
+            <menu_item
+                id="menu_item2"
+                label="_VotreChoix"
+            >
+                <menu
+                    id="menu1"
+                >
+
+                    <menu_item
+                        id="menu_item21"
+                        label="SousChoix1"
+                    />
+                    <menu_item
+                        id="menu_item22"
+                        label="SousChoix2"
+                    >
+                        <menu
+                            id="menu221"
+                        >
+                            <menu_item
+                                id="menu_item21"
+                                label="Choix221"
+                            >
+                                <menu
+                                    id="menu222"
+                                >
+                                    <menu_item
+                                        id="menu_item22"
+                                        label="Choix222"
+                                    >
+                                        <menu
+                                            id="menu223"
+                                        >
+                                            <menu_item
+                                                id="menu_item23"
+                                                label="Choix223"
+                                            />
+                                        </menu>
+                                    </menu_item>
+                                </menu>
+                            </menu_item>
+                        </menu>
+                    </menu_item>
+                    <menu_item
+                        id="menu_item23"
+                        label="SousChoix3"
+                    >
+
+                        <menu
+                            id="menu33"
+                            menu_orientation="horizontal"
+                        >
+                            <menu_item
+                                id="menu_item3"
+                                label="_LeurChoix"
+                                menu_x="0"
+                                menu_y="1"
+                            />
+                            <menu_item
+                                id="menu_item3"
+                                label="_LeurChoix"
+                                menu_x="1"
+                                menu_y="2"
+                            />
+
+                        </menu>
+                    </menu_item>
+
+                </menu>
+            </menu_item>
+
+            <menu_item
+                id="menu_item3"
+                label="_LeurChoix"
+                is_memonic="true"
+                text_color="red"
+            />
+
+
+        </menu_bar>
+
+        <label
+            id="label1"
+            label_text="Vos connaissances de GTK+"
+            xalign="0.05"
+            margin_top="70"
+        />
+        <frame
+            id="frame1"
+            margin_top="1"
+            margin_left="10"
+            margin_right="10"
+        >
+            <box
+                id="box2"
+                orientation="horizontal"
+            >
+
+                <radio_button
+                    id="rbtn1"
+                    is_group="true"
+                    is_mnemonic="true"
+                    label="_Faible"
+                    icon_name="folder"
+                    is_button_mode="true"
+                />
+
+                <radio_button
+                    id="rbtn2"
+                    is_mnemonic="true"
+                    label="_Moyen"
+                />
+
+                <radio_button
+                    id="rbtn3"
+                    is_mnemonic="true"
+                    label="_Bien"
+                />
+
+                <radio_button
+                    id="rbtn4"
+                    is_selected="true"
+                    is_mnemonic="true"
+                    label="_Tres bien"
+                />
+
+            </box>
+        </frame>
+
+        <label
+            id="label1"
+            label_text="Vos commentaires sur GTK+"
+            xalign="0.05"
+            margin_top="20"
+        />
+        <frame
+            id="frame1"
+            margin_top="1"
+            margin_left="10"
+            margin_right="10"
+        >
+            <box
+                id="box2"
+                orientation="horizontal"
+            >
+
+                <check_button
+                    id="rbtn1"
+                    label="Convivial"
+                />
+
+                <check_button
+                    id="rbtn2"
+                    label="Interessant"
+                    is_active="true"
+                />
+
+                <check_button
+                    id="rbtn3"
+                    label="Facile Ã  utiliser"
+                />
+
+                <check_button
+                    id="rbtn4"
+                    label="Optimiser le travail"
+                />
+
+            </box>
+        </frame>
+
+        <label
+            id="label3"
+            label_text="Choix de date"
+            xalign="0.05"
+            margin_top="20"
+        />
+
+        <frame
+            id="frame2"
+            margin_top="1"
+            margin_left="10"
+            margin_right="10"
+            width="50"
+            position_x="0"
+            position_y="0"
+        >
+
+            <box
+                id="box3"
+                orientation="horizontal"
+                spacing="5"
+            >
+                <box
+                    id="boc4"
+                    orientation="horizontal"
+                >
+                    <label
+                        id="label1combo1"
+                        label_text="Jour"
+                    />
+                    <combo_text_box
+                        id="combo1"
+                        has_entry="true"
+                        default_value="1"
+                        type="day"
+                    />
+                </box>
+                <box
+                    id="boc4"
+                    orientation="horizontal"
+                >
+                    <label
+                        id="label1combo1"
+                        label_text="Mois"
+                    />
+                    <combo_text_box
+                        id="combo1"
+                        has_entry="true"
+                        default_value="1"
+                        type="month"
+                    />
+                </box>
+                <box
+                    id="box41"
+                    orientation="horizontal"
+                >
+                    <label
+                        id="label1combo1"
+                        label_text="Annee"
+                    />
+                    <combo_text_box
+                        id="combo1"
+                        has_entry="true"
+                        default_value="1"
+                        type="year"
+                    />
+                </box>
+            </box>
+        </frame>
+
+        <combo_text_box
+            id="combo1"
+            margin_top="10"
+            has_entry="true"
+            default_value="Faire un choix"
+            option1="Option1"
+            option2="Option2"
+            option3="Option3"
+            option4="Option4"
+            box_expand="false"
+            box_fill="false"
+            box_padding="0"
+        />
+
+
+        <fixed
+            id="fixed1"
+            width="800"
+            height="300"
+        >
+
+            <box
+                id="box11"
+                position_x="400"
+                position_y="150"
+            >
+                <label
+                    id="label1"
+                    label_text="Vos connaissances de GTK+"
+                    xalign="0.05"
+                    margin_top="70"
+                />
+                <frame
+                    id="frame1"
+                    margin_top="1"
+                    margin_left="10"
+                    margin_right="10"
+                >
+                    <box
+                        id="box2"
+                        orientation="horizontal"
+                    >
+
+                        <radio_button
+                            id="rbtn1"
+                            is_group="true"
+                            is_mnemonic="true"
+                            label="_Faible"
+                            icon_name="folder"
+                            is_button_mode="true"
+                        />
+
+                        <radio_button
+                            id="rbtn2"
+                            is_mnemonic="true"
+                            label="_Moyen"
+                        />
+
+                        <radio_button
+                            id="rbtn3"
+                            is_mnemonic="true"
+                            label="_Bien"
+                        />
+
+                        <radio_button
+                            id="rbtn4"
+                            is_selected="true"
+                            is_mnemonic="true"
+                            label="_Tres bien"
+                        />
+
+                    </box>
+                </frame>
+            </box>
+
+            <box
+                id="box12"
+                orientation="horizontal"
+                position_x="400"
+                position_y="350"
+            >
+
+                <toggle_button
+                    id="btn1"
+                    label="_OK"
+                    width="100"
+                    height="40"
+                    margin_right="5"
+                    is_mnemonic="true"
+                    onclick="display_dialog"
+                />
+
+                <button
+                    id="btn1"
+                    label="_Quitter"
+                    width="100"
+                    height="40"
+                    margin_left="5"
+                    onclick="exit"
+                />
+
+
+            </box>
+        </fixed>
+
+    </box>
+</dialog>

@@ -1,52 +1,34 @@
 
 #include "./include/builder.h"
 
-void print_graph1(View *root)
-{
-    if (!root)
-        return;
-    g_print("WIDGET: ===> %s => PARENT ==> %s\n", root->view_config->view_id, root->parent->view_config->view_id);
-    if (root->next || root->child)
-        g_print("Has next or child\n");
-    print_graph1(root->child);
-    print_graph1(root->next);
-}
 
 // Activate callback for GtkApplication
 static void activate(GtkApplication *app, gpointer user_data)
 {
     root_app = app;
 
-    // Create a new window
-    View *root_view = build_app(app, root_view, INDEX_TXT);
+    // // Create a new window
+    View *root_view = build_app(app, NULL, INDEX_TXT);
     GtkWidget *window = root_view->widget;
 
-    // WindowConfig window_config = DEFAULT_WINDOW;
-    // GtkWidget *window = create_window(app, window_config);
 
-    // GtkWidget* box=gtk_box_new(10,10);
-    // GtkWidget* button=gtk_button_new_with_label(NULL);
+    ViewConfig *view_conf;
+    SAFE_ALLOC(view_conf, ViewConfig, 1);
 
-    // gboolean id=GTK_IS_CONTAINER(button);
-    // g_print("\nis box container: %d",id);
+    View *commands_container = find_view_by_id("commands_container", root_view);
+    if (!commands_container)
+    {
+        g_print("Error: ==> Cannot find the commands container\n");
+        return;
+    }
 
-    // gboolean id2=GTK_IS_EVENT_BOX(button);
-    // g_print("\nbutton button container: %d",id2);
+    add_command("Create button", 10, 10, "button", commands_container, root_view);
+    add_command("Create notebook", 100, 10, "notebook", commands_container, root_view);
 
-    // GtkWidget *label=gtk_label_new("hello");
-    // GtkWidget *event_box = gtk_event_box_new();
-    // gtk_container_add(GTK_CONTAINER(event_box), label);
-    // gtk_widget_show(label);
-    // gtk_widget_show(event_box);
 
-    // g_signal_connect(event_box, "button-press-event",
-    //                  G_CALLBACK(on_event_box_button_press), NULL);
-
-    // GtkWidget *button=gtk_font_button_new();
-
-    // // gtk_container_add(GTK_CONTAINER(expander), button);
-    // gtk_container_add(GTK_CONTAINER(window), event_box);
-
+    strcpy(view_conf->signal.sig_handler, "sig_open_import_dialog");
+    add_custom_command(view_conf, "Print hello", 10, 50, commands_container, root_view);
+  
     show_window(window);
 }
 

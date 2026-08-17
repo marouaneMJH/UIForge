@@ -9,16 +9,6 @@ static gboolean is_relative_container = TRUE;
 
 static gboolean update_mode = FALSE;
 
-/**
- * @brief structure for handle signales parametres
- * //todo variable: checck if on_cllick signal activate or not and also for other signales
- */
-typedef struct
-{
-    gchar params[PARAM_COUNT][MAX_SIGNAL_NAME_SIZE]; // First function parameter
-
-} ParamNode;
-
 // debug for test
 
 gboolean sig_hello(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
@@ -91,6 +81,56 @@ static void sig_change_friend_bg_color(GtkWidget *widget, gpointer data)
     View *friend = find_view_by_id(param_array->params[0], root_view_global);
     widget_set_colors(friend->widget, param_array->params[1], param_array->params[2]);
 }
+
+static void sig_open_my_dialog()
+{
+    View *dialog = build_app(root_app, NULL, MYDIALOG_TXT);
+
+    if (dialog && dialog->widget)
+        show_dialog(dialog->widget);
+}
+
+static void sig_open_import_dialog()
+{
+    root_dialog_view_global = build_app(root_app, NULL,IMPORTDIALOG_TXT);
+
+    if (root_dialog_view_global && root_dialog_view_global->widget)
+        show_dialog(root_dialog_view_global->widget);
+}
+
+static void sig_modify_window(GtkWidget *widget, gpointer data)
+{
+    View *viewer = find_view_by_id("wid-1-", root_view_global);
+
+    if (!viewer)
+    {
+        g_print("Error: ==> Cannot find the viewer\n");
+        return;
+    }
+
+    if (!parent_view)
+        parent_view = viewer;
+
+    ParamNode *param_array = (ParamNode *)data;
+    if (!param_array)
+    {
+        g_print("Error: ==> passing argument.\n");
+        return;
+    }
+    // update_mode = TRUE;
+    // ScrolledWindowConfig* configS = DEFAULT_SCROLLED_WINDOW;
+    // strcpy(configS->bg_color, "red");
+    // GtkWidget *scrolled_window_widget = create_scrolled_window(*configS);
+
+    update_mode = FALSE;
+}
+// static void sig_dialog(GtkWidget *widget, gpointer data)
+// {
+//     View *dialog = build_app(root_app, NULL, DIALOG_TXT);
+//     // view *dialog  root_dialog_view_global->widget;
+//     if (dialog && dialog->widget)
+//         show_dialog(dialog->widget);
+// }
 
 /**
  * color
@@ -579,7 +619,7 @@ void set_available_scopes(const gchar *widget_type)
 }
 
 // Set view config from the dialog
-static void sig_properties_dialog(GtkWidget *widget, gpointer data)
+extern void sig_properties_dialog(GtkWidget *widget, gpointer data)
 {
     ParamNode *param_array = (ParamNode *)data;
     if (!param_array)
@@ -1671,6 +1711,12 @@ void connect_signals(View *view)
         else if (strcmp(view->view_config->signal.sig_handler,
                         "sig_show_image") == 0)
             callback_function = sig_show_image;
+        else if (strcmp(view->view_config->signal.sig_handler, "sig_modify_window") == 0)
+            callback_function = sig_modify_window;
+        else if (strcmp(view->view_config->signal.sig_handler, "sig_open_my_dialog") == 0)
+            callback_function = sig_open_my_dialog;
+        else if (strcmp(view->view_config->signal.sig_handler, "sig_open_import_dialog") == 0)
+            callback_function = sig_open_import_dialog;
         else if (strcmp(view->view_config->signal.sig_handler,
                         "sig_create_notebook") == 0)
             callback_function = sig_create_notebook;
@@ -1790,7 +1836,21 @@ static void sig_import_ui_from_xml(GtkWidget *widget, gpointer data)
         return;
     }
 
-    viewer->child = build_app(root_app, NULL, "file.xml");
+    View *entry_viewer = find_view_by_id("entry_import_id", root_dialog_view_global);
+
+    if (!entry_viewer)
+    {
+        g_print("sig_import_ui_from_xml: No entry_viewer to.\n");
+        return;
+    }
+
+    const char *path = gtk_entry_get_text(GTK_ENTRY(entry_viewer->widget));
+
+    
+
+
+
+    viewer->child = build_app(root_app, NULL, path);
     if (!viewer->child)
     {
         g_print("sig_import_ui_from_xml: Failed to build UI.\n");
@@ -1824,6 +1884,8 @@ static void sig_import_ui_from_xml(GtkWidget *widget, gpointer data)
     }
 
     gtk_widget_show_all(content_view->widget);
+    // sig_destroy_dialog(widget,NULL);
+   
 }
 
 static void sig_refrech_crud_ui(GtkWidget *widget, gpointer data)

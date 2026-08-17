@@ -4,6 +4,8 @@
 #include "./index.h"
 #define INDEX_TXT "./src/view/index.xml"
 #define DIALOG_TXT "./src/view/dialog.xml"
+#define MYDIALOG_TXT "./src/view/my_dialog.xml"
+#define IMPORTDIALOG_TXT "./src/view/import_dialog.xml"
 #define ERROR_DIALOG_TXT "./src/view/error_dialog.xml"
 #define BOX_PROPERTIES_DIALOG_TXT "./src/view/properties/box_dialog.xml"
 #define FIXED_PROPERTIES_DIALOG_TXT "./src/view/properties/fixed_dialog.xml"
@@ -36,7 +38,6 @@
 #define EXPANDER_PROPERTIES_DIALOG_TXT "./src/view/properties/expander_dialog.xml"
 #define EVENT_BOX_PROPERTIES_DIALOG_TXT "./src/view/properties/event_box_dialog.xml"
 #define SWITCH_BUTTON_PROPERTIES_DIALOG_TXT "./src/view/properties/switch_button_dialog.xml"
-
 
 #define MODE "r"
 
@@ -90,5 +91,9 @@ int get_view_index(gchar *widget_tag);
 View *build_app(GtkApplication *app, View *root_view, const gchar *file_path);
 
 void connect_signals(View *view);
+
+void add_command(const gchar *label, gint x, gint y, const gchar *signal_option, View *commands_container, View *root_view);
+
+void add_custom_command(ViewConfig *view_conf, const gchar *label, gint x, gint y, View *commands_container, View *root_view);
 
 #endif
